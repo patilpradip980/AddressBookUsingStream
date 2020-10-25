@@ -73,53 +73,6 @@ public class AddressBookManager {
     }
 
 
-    public String editPerson(String fileName) throws FileNotFoundException, IOException {
-        System.out.println("Enter Name for edit person data\n");
-        String lineToFind = scanner.next();
-        File inFile = new File((path + fileName + ".csv"));
-        File tempFile = new File(path + fileName + ".tmp");
-        BufferedReader br = new BufferedReader(new FileReader(inFile));
-        bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
-        String line = null;
-        while ((line = br.readLine()) != null) {
-            if (line.trim().contains(lineToFind)) {
-                System.out.println("Data found for given Name \n" + line);
-                String[] personDetail = line.split(",");
-                firstName = personDetail[0];
-                lastName = personDetail[1];
-                System.out.println("enter the new city");
-                city = scanner.next();
-                System.out.println("enter the new State");
-                state = scanner.next();
-                System.out.println("enter the new Zipcode");
-                zipCode = scanner.nextInt();
-                phoneNumber = personDetail[5];
-                bufferedWriter.write(firstName);
-                bufferedWriter.write("," + lastName);
-                bufferedWriter.write("," + city);
-                bufferedWriter.write("," + state);
-                bufferedWriter.write("," + zipCode);
-                bufferedWriter.write("," + phoneNumber);
-                bufferedWriter.newLine();
-                flag++;
-            } else {
-                bufferedWriter.write(line);
-                bufferedWriter.newLine();
-            }
-
-        }
-        bufferedWriter.close();
-        br.close();
-        inFile.delete();
-        tempFile.renameTo(inFile);
-        if (flag == 0) {
-            System.out.println("Data not found in AddressBook :" + fileName);
-        } else {
-            System.out.println("Data Modified Successfully.....");
-        }
-        return null;
-    }
-
 
 }
 
