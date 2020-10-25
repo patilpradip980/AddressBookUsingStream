@@ -74,8 +74,27 @@ public class AddressBookManager {
         fileWriter = new FileWriter(path + key + ".csv", true);
         bufferedWriter = new BufferedWriter(fileWriter);
         for (int J = 0; J < personArrayList.size(); J++) {
-            bufferedWriter.write(personArrayList.get(J).toString() + "\n");
-            System.out.println(" Data Saved in AddressBook :" + key + ".csv");
+            String name = personArrayList.get(J).getFirstName().trim();
+            System.out.println("checking with Name " + name + " any data present or not");
+            System.out.println("---------");
+            System.out.println("------------");
+            File input = new File((path + key + ".csv"));
+            fileReader = new FileReader(input);
+            bufferedReader = new BufferedReader(fileReader);
+            while ((str = bufferedReader.readLine()) != null) {
+                if (str.contains(name)) {
+                    flag++;
+                    find = str;
+                }
+            }
+            bufferedReader.close();
+            if (flag == 0) {
+                bufferedWriter.write(personArrayList.get(J).toString() + "\n");
+                System.out.println("Data not present with " + name + " And Data Saved in AddressBook :" + key + ".csv");
+            } else {
+                System.out.println("Already Data present with same Number so try with different one -->" + find);
+            }
+
         }
         bufferedWriter.close();
         fileWriter.close();
