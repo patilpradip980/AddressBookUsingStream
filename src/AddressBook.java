@@ -36,6 +36,9 @@ public class AddressBook extends AddressBookManager {
                 case 4:
                     addressBook.editPerson(fileName);
                     break;
+                case 5:
+                    addressBook.deletePerson(fileName);
+                    break;
                 default:
                     System.out.println("Please enter correct choice");
 
