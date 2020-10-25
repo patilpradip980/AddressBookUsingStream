@@ -22,7 +22,7 @@ public class AddressBook extends AddressBookManager {
                     fileName = addressBook.createBook();
                     break;
                 case 2:
-                    arrayListHashMap = addressBook.addPerson(fileName);
+                    arrayListHashMap = addressBook.addPerson();
                     Iterator it = arrayListHashMap.entrySet().iterator();
                     while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry) it.next();
@@ -34,10 +34,10 @@ public class AddressBook extends AddressBookManager {
                     addressBook.saveData(key, arrayList);
                     break;
                 case 4:
-                    addressBook.editPerson(fileName);
+                    addressBook.editPerson();
                     break;
                 case 5:
-                    addressBook.deletePerson(fileName);
+                    addressBook.deletePerson();
                     break;
                 default:
                     System.out.println("Please enter correct choice");

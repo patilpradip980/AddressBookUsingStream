@@ -26,23 +26,28 @@ public class AddressBookManager {
         System.out.print("Enter the desired name of your Book : ");
         fileName = scanner.next();
         file = new File(path + fileName + ".csv");
-        file.createNewFile();
-        fileWriter = new FileWriter(file, true);
-        bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write("FirstName");
-        bufferedWriter.write(",Lastname");
-        bufferedWriter.write(",City");
-        bufferedWriter.write(",State");
-        bufferedWriter.write(",Zipcode");
-        bufferedWriter.write(",Phonenumber");
-        bufferedWriter.newLine();
-        System.out.println("Address Book Created ");
-        bufferedWriter.close();
-        fileWriter.close();
+        if (file.isFile()) {
+            System.out.println("Book with Name " + fileName + " already Created");
+        } else {
+            file.createNewFile();
+            fileWriter = new FileWriter(file, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("FirstName");
+            bufferedWriter.write(",Lastname");
+            bufferedWriter.write(",City");
+            bufferedWriter.write(",State");
+            bufferedWriter.write(",Zipcode");
+            bufferedWriter.write(",Phonenumber");
+            bufferedWriter.newLine();
+            System.out.println("Address Book Created ");
+            bufferedWriter.close();
+            fileWriter.close();
+        }
         return fileName;
     }
 
-    public HashMap<String, ArrayList<Person>> addPerson(String fileName) {
+    public HashMap<String, ArrayList<Person>> addPerson() {
+        fileName = AccessBook();
         System.out.println("How many data do you want to save in AddressBook :" + fileName);
         int n = scanner.nextInt();
         for (int i = 1; i <= n; i++) {
@@ -76,7 +81,8 @@ public class AddressBookManager {
         fileWriter.close();
     }
 
-    public String editPerson(String fileName) throws FileNotFoundException, IOException {
+    public String editPerson() throws FileNotFoundException, IOException {
+        fileName = AccessBook();
         System.out.println("Enter Name for edit person data\n");
         String lineToFind = scanner.next();
         File inFile = new File((path + fileName + ".csv"));
@@ -123,7 +129,8 @@ public class AddressBookManager {
         return null;
     }
 
-    public void deletePerson(String fileName) throws IOException {
+    public void deletePerson() throws IOException {
+        fileName = AccessBook();
         System.out.println("Enter Number for Delete Data ");
         String lineToRemove = scanner.next();
         File inFile = new File((path + fileName + ".csv"));
@@ -143,6 +150,23 @@ public class AddressBookManager {
         System.out.println("Data deleted From AddressBook");
         tempFile.renameTo(inFile);
         System.out.println(" ");
+    }
+
+    public String AccessBook() {
+        System.out.println("AddressBooks :---- \n");
+        File file = new File(path);
+        String[] list = file.list();
+        for (String list1 : list) {
+            System.out.println(list1);
+        }
+        System.out.println("======================");
+        System.out.println("In which AddressBook You want to Perform Operation\n");
+        fileName = scanner.next();
+        file = new File(path + fileName + ".csv");
+        if (file.isFile()) {
+            return fileName;
+        } else
+            return null;
     }
 
 }
