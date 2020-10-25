@@ -43,21 +43,25 @@ public class AddressBookManager {
     }
 
     public HashMap<String, ArrayList<Person>> addPerson(String fileName) {
-        System.out.println("Enter First Name :");
-        firstName = scanner.next();
-        System.out.println("Enter Last Name :");
-        lastName = scanner.next();
-        System.out.println("Enter City :");
-        city = scanner.next();
-        System.out.println("Enter State :");
-        state = scanner.next();
-        System.out.println("Enter Zip Code :");
-        zipCode = scanner.nextInt();
-        System.out.println("Enter Phone Number :");
-        phoneNumber = scanner.next();
-        arrayList.add(new Person(firstName + ",", lastName + ",", city + ",", state + ",", zipCode, "," + phoneNumber));
-        hashMap.put(fileName, arrayList);
-        System.out.println("Please save Data in AddressBook " + fileName + " By save data option");
+        System.out.println("How many data do you want to save in AddressBook :" + fileName);
+        int n = scanner.nextInt();
+        for (int i = 1; i <= n; i++) {
+            System.out.println("Enter First Name :");
+            firstName = scanner.next();
+            System.out.println("Enter Last Name :");
+            lastName = scanner.next();
+            System.out.println("Enter City :");
+            city = scanner.next();
+            System.out.println("Enter State :");
+            state = scanner.next();
+            System.out.println("Enter Zip Code :");
+            zipCode = scanner.nextInt();
+            System.out.println("Enter Phone Number :");
+            phoneNumber = scanner.next();
+            arrayList.add(new Person(firstName + ",", lastName + ",", city + ",", state + ",", zipCode, "," + phoneNumber));
+            hashMap.put(fileName, arrayList);
+            System.out.println("Please save Data in AddressBook " + fileName + " By save data option");
+        }
         return hashMap;
     }
 
@@ -118,6 +122,7 @@ public class AddressBookManager {
         }
         return null;
     }
+
     public void deletePerson(String fileName) throws IOException {
         System.out.println("Enter Number for Delete Data ");
         String lineToRemove = scanner.next();
