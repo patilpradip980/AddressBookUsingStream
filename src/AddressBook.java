@@ -13,7 +13,7 @@ public class AddressBook extends AddressBookManager {
         System.out.println("AddressBook By Using Java 8 Stream ");
         while (true) {
             System.out.println("1) Create Book \n" + "2) Add Person \n" + "3) Save Person \n" +
-                    "4) Edit Person \n" + "5) Delete Person \n" + "6) Sort ByZip \n" +
+                    "4) Edit Person \n" + "5) Delete Person \n" + "6) Sort Data \n" +
                     "7) Sort ByName \n" + "8) Display \n" + "9) Search Person \n" + "10) Show Books \n");
 
             int ch2 = scanner.nextInt();
@@ -39,6 +39,8 @@ public class AddressBook extends AddressBookManager {
                 case 5:
                     addressBook.deletePerson();
                     break;
+                case 6:
+                    addressBook.sortData();
                 case 7:
                     addressBook.sortByName();
                     break;

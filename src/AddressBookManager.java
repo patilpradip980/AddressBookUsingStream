@@ -202,9 +202,9 @@ public class AddressBookManager {
                         .filter(line -> line.contains(city)).collect(Collectors.toList());
                 if (filteredLines.size() > 0) {
                     for (int i = 0; i < filteredLines.size(); i++) {
-                        System.out.println(filteredLines.get(i)+"\n");
+                        System.out.println(filteredLines.get(i) + "\n");
                     }
-                    System.out.println("Total person in city :-" +filteredLines.size());
+                    System.out.println("Total person in city :-" + filteredLines.size());
                 } else {
                     System.out.println("Data not found for given city");
                 }
@@ -216,9 +216,9 @@ public class AddressBookManager {
                         .filter(line -> line.contains(state)).collect(Collectors.toList());
                 if (filteredLines2.size() > 0) {
                     for (int i = 0; i < filteredLines2.size(); i++) {
-                        System.out.println(filteredLines2.get(i)+"\n");
+                        System.out.println(filteredLines2.get(i) + "\n");
                     }
-                    System.out.println("Total person in city :-" +filteredLines2.size());
+                    System.out.println("Total person in city :-" + filteredLines2.size());
                 } else {
                     System.out.println("Data not found for given state");
                 }
@@ -227,8 +227,30 @@ public class AddressBookManager {
 
     public void sortByName() throws FileNotFoundException, IOException {
         fileName = AccessBook();
-        ArrayList<Person>list=readcsv(fileName);
-         list.stream().sorted((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName())).collect(Collectors.toList()).forEach(System.out::println);
+        ArrayList<Person> list = readcsv(fileName);
+        list.stream().sorted((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName())).forEach(System.out::println);
+
+    }
+
+    public void sortData() throws FileNotFoundException, IOException {
+        fileName = AccessBook();
+        ArrayList<Person> list = readcsv(fileName);
+        System.out.println("please choice to sort data by \n"+ "1)Zipcode \n" + "2)city \n" + "3)state\n");
+        int ch=scanner.nextInt();
+        switch (ch)
+        {
+            case 1:
+                list.stream().sorted(Comparator.comparing(Person::getZipCode)).collect(Collectors.toList()).forEach(System.out::println);
+                break;
+            case 2:
+                list.stream().sorted(Comparator.comparing(Person::getCity)).forEach(System.out::println);
+                break;
+            case 3:
+                list.stream().sorted((o1, o2) -> o1.getState().compareToIgnoreCase(o2.getState())).forEach(System.out::println);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + ch);
+        }
 
     }
 
