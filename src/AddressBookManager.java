@@ -207,6 +207,7 @@ public class AddressBookManager {
                     for (int i = 0; i < filteredLines.size(); i++) {
                         System.out.println(filteredLines.get(i)+"\n");
                     }
+                    System.out.println("Total person in city :-" +filteredLines.size());
                 } else {
                     System.out.println("Data not found for given city");
                 }
@@ -220,6 +221,7 @@ public class AddressBookManager {
                     for (int i = 0; i < filteredLines2.size(); i++) {
                         System.out.println(filteredLines2.get(i)+"\n");
                     }
+                    System.out.println("Total person in city :-" +filteredLines2.size());
                 } else {
                     System.out.println("Data not found for given state");
                 }
