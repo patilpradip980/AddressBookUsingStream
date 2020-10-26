@@ -5,14 +5,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zipCode=" + zipCode +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return "" + firstName + "" + lastName + "" + city + "" + state + "" + zipCode + "" + phoneNumber;
     }
 
     String state;

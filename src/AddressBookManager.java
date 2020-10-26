@@ -1,5 +1,11 @@
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddressBookManager {
     Scanner scanner = new Scanner(System.in);
@@ -46,7 +52,7 @@ public class AddressBookManager {
         return fileName;
     }
 
-    public HashMap<String, ArrayList<Person>> addPerson() {
+    public HashMap<String, ArrayList<Person>> addPerson() throws IOException {
         fileName = AccessBook();
         System.out.println("How many data do you want to save in AddressBook :" + fileName);
         int n = scanner.nextInt();
@@ -65,40 +71,22 @@ public class AddressBookManager {
             phoneNumber = scanner.next();
             arrayList.add(new Person(firstName + ",", lastName + ",", city + ",", state + ",", zipCode, "," + phoneNumber));
             hashMap.put(fileName, arrayList);
-            System.out.println("Please save Data in AddressBook " + fileName + " By save data option");
         }
         return hashMap;
+
     }
 
     public void saveData(String key, ArrayList<Person> personArrayList) throws IOException {
         fileWriter = new FileWriter(path + key + ".csv", true);
         bufferedWriter = new BufferedWriter(fileWriter);
         for (int J = 0; J < personArrayList.size(); J++) {
-            String name = personArrayList.get(J).getFirstName().trim();
-            System.out.println("checking with Name " + name + " any data present or not");
-            System.out.println("---------");
-            System.out.println("------------");
-            File input = new File((path + key + ".csv"));
-            fileReader = new FileReader(input);
-            bufferedReader = new BufferedReader(fileReader);
-            while ((str = bufferedReader.readLine()) != null) {
-                if (str.contains(name)) {
-                    flag++;
-                    find = str;
-                }
-            }
-            bufferedReader.close();
-            if (flag == 0) {
-                bufferedWriter.write(personArrayList.get(J).toString() + "\n");
-                System.out.println("Data not present with " + name + " And Data Saved in AddressBook :" + key + ".csv");
-            } else {
-                System.out.println("Already Data present with same Number so try with different one -->" + find);
-            }
-
+            bufferedWriter.write(personArrayList.get(J).toString() + "\n");
+            System.out.println(" Data Saved in AddressBook :" + key + ".csv");
         }
         bufferedWriter.close();
         fileWriter.close();
     }
+
 
     public String editPerson() throws FileNotFoundException, IOException {
         fileName = AccessBook();
@@ -106,21 +94,21 @@ public class AddressBookManager {
         String lineToFind = scanner.next();
         File inFile = new File((path + fileName + ".csv"));
         File tempFile = new File(path + fileName + ".tmp");
-        BufferedReader br = new BufferedReader(new FileReader(inFile));
+        bufferedReader = new BufferedReader(new FileReader(inFile));
         bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
-        String line = null;
-        while ((line = br.readLine()) != null) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
             if (line.trim().contains(lineToFind)) {
                 System.out.println("Data found for given Name \n" + line);
                 String[] personDetail = line.split(",");
-                firstName = personDetail[0];
-                lastName = personDetail[1];
+                String firstName = personDetail[0];
+                String lastName = personDetail[1];
                 System.out.println("enter the new city");
-                city = scanner.next();
+                String city = scanner.next();
                 System.out.println("enter the new State");
-                state = scanner.next();
+                String state = scanner.next();
                 System.out.println("enter the new Zipcode");
-                zipCode = scanner.nextInt();
+                int zipCode = scanner.nextInt();
                 phoneNumber = personDetail[5];
                 bufferedWriter.write(firstName);
                 bufferedWriter.write("," + lastName);
@@ -137,7 +125,7 @@ public class AddressBookManager {
 
         }
         bufferedWriter.close();
-        br.close();
+        bufferedReader.close();
         inFile.delete();
         tempFile.renameTo(inFile);
         if (flag == 0) {
@@ -150,21 +138,21 @@ public class AddressBookManager {
 
     public void deletePerson() throws IOException {
         fileName = AccessBook();
-        System.out.println("Enter Number for Delete Data ");
+        System.out.println("Enter Name for Delete Data ");
         String lineToRemove = scanner.next();
         File inFile = new File((path + fileName + ".csv"));
         File tempFile = new File(path + fileName + ".tmp");
-        BufferedReader br = new BufferedReader(new FileReader(inFile));
+        bufferedReader = new BufferedReader(new FileReader(inFile));
         PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-        String line = null;
-        while ((line = br.readLine()) != null) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
             if (!line.trim().contains(lineToRemove)) {
                 pw.println(line);
                 pw.flush();
             }
         }
         pw.close();
-        br.close();
+        bufferedReader.close();
         inFile.delete();
         System.out.println("Data deleted From AddressBook");
         tempFile.renameTo(inFile);
@@ -187,6 +175,38 @@ public class AddressBookManager {
         } else
             return null;
     }
+
+    public void searchperson() throws RuntimeException, FileNotFoundException, IOException {
+        fileName = AccessBook();
+        boolean temp = false;
+        System.out.println("enter city and person name to search");
+        System.out.println("Person name :-");
+        String name = scanner.next();
+        System.out.println("city name :-");
+        String cityname = scanner.next();
+        List<String> filteredLines = Files.lines(Paths.get(path + fileName + ".csv"))
+                .filter(line -> line.contains(name) && line.contains(cityname)).collect(Collectors.toList());
+        if (filteredLines.size() > 0) {
+            System.out.println(filteredLines);
+        } else {
+            System.out.println("Data not found");
+        }
+
+    }
+
+    public String Display() throws IOException, FileNotFoundException {
+        fileName = AccessBook();
+        System.out.println("Books Present in System :");
+        Scanner scanner = new Scanner(new File(path + fileName + ".csv"));
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            System.out.println(line);
+        }
+        System.out.println(" \n\n");
+        scanner.close();
+        return null;
+    }
+
 
 }
 

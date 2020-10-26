@@ -39,6 +39,12 @@ public class AddressBook extends AddressBookManager {
                 case 5:
                     addressBook.deletePerson();
                     break;
+                case 8:
+                    addressBook.Display();
+                    break;
+                case 9:
+                    addressBook.searchperson();
+                    break;
                 default:
                     System.out.println("Please enter correct choice");
 
