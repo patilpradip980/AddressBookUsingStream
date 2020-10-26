@@ -39,6 +39,9 @@ public class AddressBook extends AddressBookManager {
                 case 5:
                     addressBook.deletePerson();
                     break;
+                case 7:
+                    addressBook.sortByName();
+                    break;
                 case 8:
                     addressBook.Display();
                     break;

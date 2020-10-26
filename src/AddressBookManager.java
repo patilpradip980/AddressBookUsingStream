@@ -1,11 +1,8 @@
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AddressBookManager {
     Scanner scanner = new Scanner(System.in);
@@ -228,6 +225,33 @@ public class AddressBookManager {
         }
     }
 
+    public void sortByName() throws FileNotFoundException, IOException {
+        fileName = AccessBook();
+        ArrayList<Person>list=readcsv(fileName);
+         list.stream().sorted((o1, o2) -> o1.getFirstName().compareToIgnoreCase(o2.getFirstName())).collect(Collectors.toList()).forEach(System.out::println);
+
+    }
+
+    public ArrayList<Person> readcsv(String fileName) throws IOException {
+        File inFile = new File((path + this.fileName + ".csv"));
+        bufferedReader = new BufferedReader(new FileReader(inFile));
+        ArrayList<Person> lines = new ArrayList<Person>();
+        String currentLine1 = bufferedReader.readLine();
+        String currentLine = bufferedReader.readLine();
+        while (currentLine != null) {
+            String[] persondrtails = currentLine.split(",");
+            String firstname = persondrtails[0];
+            String lastname = persondrtails[1];
+            String city = persondrtails[2];
+            String state = persondrtails[3];
+            int zipcode = Integer.valueOf(persondrtails[4]);
+            String phonenumber = persondrtails[5];
+            lines.add(new Person(firstname + ",", lastname + ",", city + ",", state + ",", zipcode, "," + phonenumber));
+            currentLine = bufferedReader.readLine();
+        }
+
+        return lines;
+    }
 
 }
 
