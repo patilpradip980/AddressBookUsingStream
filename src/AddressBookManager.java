@@ -191,20 +191,39 @@ public class AddressBookManager {
         } else {
             System.out.println("Data not found");
         }
-
     }
 
-    public String Display() throws IOException, FileNotFoundException {
+    public void Display() throws IOException, FileNotFoundException {
         fileName = AccessBook();
-        System.out.println("Books Present in System :");
-        Scanner scanner = new Scanner(new File(path + fileName + ".csv"));
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            System.out.println(line);
+        System.out.println("Display data please select\n" + "1)Bycity \n" + "2)Bystate \n");
+        int ch = scanner.nextInt();
+        switch (ch) {
+            case 1:
+                System.out.println("enter city name to view data");
+                String city = scanner.next();
+                List<String> filteredLines = Files.lines(Paths.get(path + fileName + ".csv"))
+                        .filter(line -> line.contains(city)).collect(Collectors.toList());
+                if (filteredLines.size() > 0) {
+                    for (int i = 0; i < filteredLines.size(); i++) {
+                        System.out.println(filteredLines.get(i)+"\n");
+                    }
+                } else {
+                    System.out.println("Data not found for given city");
+                }
+                break;
+            case 2:
+                System.out.println("enter state name to view data");
+                String state = scanner.next();
+                List<String> filteredLines2 = Files.lines(Paths.get(path + fileName + ".csv"))
+                        .filter(line -> line.contains(state)).collect(Collectors.toList());
+                if (filteredLines2.size() > 0) {
+                    for (int i = 0; i < filteredLines2.size(); i++) {
+                        System.out.println(filteredLines2.get(i)+"\n");
+                    }
+                } else {
+                    System.out.println("Data not found for given state");
+                }
         }
-        System.out.println(" \n\n");
-        scanner.close();
-        return null;
     }
 
 
