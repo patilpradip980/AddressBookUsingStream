@@ -1,8 +1,7 @@
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.io.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class AddressBookManager {
     Scanner scanner = new Scanner(System.in);
@@ -11,10 +10,7 @@ public class AddressBookManager {
     public String path = "C:\\csv\\";
     public BufferedWriter bufferedWriter;
     public FileWriter fileWriter;
-    public FileReader fileReader;
     public BufferedReader bufferedReader;
-    public String str;
-    public String num, find;
     public int flag = 0;
     String firstName;
     String lastName;
@@ -25,14 +21,14 @@ public class AddressBookManager {
     public ArrayList<Person> arrayList = new ArrayList<Person>(100);
     public HashMap<String, ArrayList<Person>> hashMap = new HashMap<>(100);
 
-    public String createBook() throws IOException {
+    public void createBook() throws IOException {
         System.out.print("Enter the desired name of your Book : ");
         fileName = scanner.next();
         file = new File(path + fileName + ".csv");
         if (file.isFile()) {
             System.out.println("Book with Name " + fileName + " already Created");
         } else {
-            file.createNewFile();
+            boolean newFile = file.createNewFile();
             fileWriter = new FileWriter(file, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write("FirstName");
@@ -46,11 +42,13 @@ public class AddressBookManager {
             bufferedWriter.close();
             fileWriter.close();
         }
-        return fileName;
     }
 
-    public HashMap<String, ArrayList<Person>> addPerson() throws IOException {
+    public void addPerson() throws IOException {
         fileName = AccessBook();
+        fileWriter = new FileWriter(path + fileName + ".csv", true);
+        bufferedWriter = new BufferedWriter(fileWriter);
+        Path path2 = Paths.get(path + fileName + ".csv");
         System.out.println("How many data do you want to save in AddressBook :" + fileName);
         int n = scanner.nextInt();
         for (int i = 1; i <= n; i++) {
@@ -67,23 +65,25 @@ public class AddressBookManager {
             System.out.println("Enter Phone Number :");
             phoneNumber = scanner.next();
             arrayList.add(new Person(firstName + ",", lastName + ",", city + ",", state + ",", zipCode, "," + phoneNumber));
-            hashMap.put(fileName, arrayList);
         }
-        return hashMap;
+        for (int i = 0; i < arrayList.size(); i++) {
+            String name=arrayList.get(i).getFirstName();
+            Stream<String> lines = Files.lines(path2);
+            Optional optional = lines.filter(s -> s.contains(name)).findFirst();
+            if (optional.isPresent()) {
+                System.out.println(" data present alredy");
+                lines.close();
+            } else {
+                bufferedWriter.write(arrayList.get(i).toString() + "\n");
+                lines.close();
+                System.out.println(" Data Saved in AddressBook :" + fileName + ".csv");
+            }
 
-    }
-
-    public void saveData(String key, ArrayList<Person> personArrayList) throws IOException {
-        fileWriter = new FileWriter(path + key + ".csv", true);
-        bufferedWriter = new BufferedWriter(fileWriter);
-        for (int J = 0; J < personArrayList.size(); J++) {
-            bufferedWriter.write(personArrayList.get(J).toString() + "\n");
-            System.out.println(" Data Saved in AddressBook :" + key + ".csv");
         }
+        arrayList.clear();
         bufferedWriter.close();
         fileWriter.close();
     }
-
 
     public String editPerson() throws FileNotFoundException, IOException {
         fileName = AccessBook();
@@ -235,10 +235,9 @@ public class AddressBookManager {
     public void sortData() throws FileNotFoundException, IOException {
         fileName = AccessBook();
         ArrayList<Person> list = readcsv(fileName);
-        System.out.println("please choice to sort data by \n"+ "1)Zipcode \n" + "2)city \n" + "3)state\n");
-        int ch=scanner.nextInt();
-        switch (ch)
-        {
+        System.out.println("please choice to sort data by \n" + "1)Zipcode \n" + "2)city \n" + "3)state\n");
+        int ch = scanner.nextInt();
+        switch (ch) {
             case 1:
                 list.stream().sorted(Comparator.comparing(Person::getZipCode)).collect(Collectors.toList()).forEach(System.out::println);
                 break;

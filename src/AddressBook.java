@@ -6,32 +6,23 @@ public class AddressBook extends AddressBookManager {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         String fileName = null, key = null;
-        HashMap<String, ArrayList<Person>> arrayListHashMap = new HashMap<>(100);
-        ArrayList<Person> arrayList = new ArrayList<Person>(100);
-
         AddressBook addressBook = new AddressBook();
         System.out.println("AddressBook By Using Java 8 Stream ");
         while (true) {
-            System.out.println("1) Create Book \n" + "2) Add Person \n" + "3) Save Person \n" +
+            System.out.println("1) Create Book \n" + "2) Add Person \n" + "3) Search Person \n" +
                     "4) Edit Person \n" + "5) Delete Person \n" + "6) Sort Data \n" +
-                    "7) Sort ByName \n" + "8) Display \n" + "9) Search Person \n" + "10) Show Books \n");
+                    "7) Sort ByName \n" + "8) Display \n");
 
             int ch2 = scanner.nextInt();
             switch (ch2) {
                 case 1:
-                    fileName = addressBook.createBook();
+                    addressBook.createBook();
                     break;
                 case 2:
-                    arrayListHashMap = addressBook.addPerson();
-                    Iterator it = arrayListHashMap.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        key = (String) pair.getKey();
-                        arrayList = (ArrayList<Person>) pair.getValue();
-                    }
+                    addressBook.addPerson();
                     break;
                 case 3:
-                    addressBook.saveData(key, arrayList);
+                    addressBook.searchperson();
                     break;
                 case 4:
                     addressBook.editPerson();
@@ -41,14 +32,12 @@ public class AddressBook extends AddressBookManager {
                     break;
                 case 6:
                     addressBook.sortData();
+                    break;
                 case 7:
                     addressBook.sortByName();
                     break;
                 case 8:
                     addressBook.Display();
-                    break;
-                case 9:
-                    addressBook.searchperson();
                     break;
                 default:
                     System.out.println("Please enter correct choice");
